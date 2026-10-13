@@ -10,6 +10,7 @@ $hero = [
     'eyebrow' => 'Testimonials',
     'title' => 'In our clients’ <em>words.</em>',
     'lead' => 'The best measure of our work is what it means for the people and organizations we support.',
+    'photo' => 'teamwork',
     'crumbs' => [['Testimonials', null]],
 ];
 include __DIR__ . '/../components/site/page-hero.php';

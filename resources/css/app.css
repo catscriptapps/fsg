@@ -782,3 +782,54 @@ th[data-sort].sort-desc::after {
     background-clip: text;
     color: transparent;
 }
+
+/* Home showcase slideshow (components/site/slideshow.php + site.js) */
+.slide-img {
+    opacity: 0;
+    transform: none;
+    transition: opacity 1.4s ease, transform 1.4s ease;
+}
+.slide-img.is-active {
+    opacity: 1;
+    animation: slideKenBurns calc(var(--slide-ms, 7000ms) + 1600ms) ease-out forwards;
+}
+@keyframes slideKenBurns {
+    from { transform: scale(1.12); }
+    to { transform: scale(1); }
+}
+.slide-caption {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .7s ease, transform .7s ease;
+    pointer-events: none;
+}
+.slide-caption.is-active {
+    opacity: 1;
+    transform: none;
+    transition-delay: .35s;
+    pointer-events: auto;
+}
+[data-slide-tab][aria-selected="true"] .slide-fill {
+    animation: slideFill var(--slide-ms, 7000ms) linear forwards;
+}
+[data-slide-tab].is-done .slide-fill { width: 100%; }
+.slideshow.is-paused .slide-fill,
+.slideshow.is-paused .slide-img.is-active { animation-play-state: paused; }
+@keyframes slideFill { from { width: 0; } to { width: 100%; } }
+
+/* Framed photo (inner pages) */
+.photo-frame { position: relative; overflow: hidden; border-radius: 1.75rem; background: #0b0a08; box-shadow: 0 30px 60px -25px rgba(23, 21, 18, 0.45); }
+.photo-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.photo-frame:hover img { transform: scale(1.04); }
+.photo-frame::after { content: ""; position: absolute; inset: .75rem; border-radius: 1.3rem; border: 1px solid rgba(224, 193, 144, 0.28); pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .slide-img, .slide-img.is-active { transform: none; animation: none; transition: opacity .3s ease; }
+    .slide-caption, .slide-caption.is-active { transform: none; transition: opacity .3s ease; }
+    .photo-frame img, .photo-frame:hover img { transform: none; transition: none; }
+}
+
+/* Inner-page hero photo: warm, slightly desaturated, slow drift */
+.hero-photo { filter: saturate(.75) contrast(1.05); animation: heroDrift 24s ease-out forwards; }
+@keyframes heroDrift { from { transform: scale(1.1); } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .hero-photo { animation: none; } }

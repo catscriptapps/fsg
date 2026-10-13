@@ -11,7 +11,8 @@ namespace Src\Content;
  * contact form's "Service of interest" list, and a sitemap entry.
  *
  * To add a service, copy an entry and change the slug (lower-case, hyphens)
- * and copy. 'icon' is a key from Src\Content\Icons.
+ * and copy. 'icon' is a key from Src\Content\Icons; 'photo' is a role from
+ * Src\Content\Photos (the picture behind the service page's hero).
  */
 class Services
 {
@@ -23,6 +24,7 @@ class Services
                 'title' => 'Funding Strategy & Grant Development',
                 'seo_title' => 'Grant Writing & Funding Strategy Consulting',
                 'icon' => 'funding',
+                'photo' => 'advising',
                 'short' => 'Identify the right funding opportunities and prepare strong, strategic applications.',
                 'summary' => 'Grant research, eligibility assessment, proposal writing, budgets and funding-readiness support for businesses, nonprofits, community organizations and entrepreneurs.',
                 'intro' => [
@@ -61,6 +63,7 @@ class Services
                 'title' => 'Business Consulting & Strategic Planning',
                 'seo_title' => 'Business Consulting & Strategic Planning',
                 'icon' => 'strategy',
+                'photo' => 'meeting',
                 'short' => 'Turn an idea into an actionable plan — and a plan into sustainable growth.',
                 'summary' => 'Business strategy, growth planning, business model development, strategic and operational planning for entrepreneurs, small businesses and established organizations.',
                 'intro' => [
@@ -96,6 +99,7 @@ class Services
                 'title' => 'Nonprofit Development & Community Organization Support',
                 'seo_title' => 'Nonprofit Consulting & Community Organization Support',
                 'icon' => 'community',
+                'photo' => 'teamwork',
                 'short' => 'Strengthen capacity, design programs and pursue funding for community impact.',
                 'summary' => 'Nonprofit program development, funding strategy, community needs assessments, partnership development and sustainable service delivery models.',
                 'intro' => [
@@ -131,6 +135,7 @@ class Services
                 'title' => 'Healthcare & Community Health Consulting',
                 'seo_title' => 'Healthcare, Clinic Development & Community Health Consulting',
                 'icon' => 'health',
+                'photo' => 'consult',
                 'short' => 'Clinical insight and strategic planning for healthcare programs, clinics and community health.',
                 'summary' => 'Healthcare program development, clinic planning, community health initiatives, operations and workflow planning, quality improvement and program evaluation.',
                 'intro' => [
@@ -169,6 +174,7 @@ class Services
                 'title' => 'Disability Case Management Consulting',
                 'seo_title' => 'Disability Case Management Consulting',
                 'icon' => 'case',
+                'photo' => 'consult',
                 'short' => 'Clinically informed guidance for navigating disability-related processes.',
                 'summary' => 'Disability case management consultation, return-to-work and accommodation planning, resource navigation, case coordination and workplace accommodation strategy.',
                 'intro' => [
@@ -203,6 +209,7 @@ class Services
                 'title' => 'Sports Career Management',
                 'seo_title' => 'Sports Career Management & Athlete Career Planning',
                 'icon' => 'sports',
+                'photo' => 'meeting',
                 'short' => 'Career planning, positioning and opportunity strategy for athletes.',
                 'summary' => 'Athlete career planning, career development and transition planning, opportunity identification, partnerships, brand positioning and business development.',
                 'intro' => [
@@ -236,6 +243,7 @@ class Services
                 'title' => 'Shelter & Social-Service Project Development',
                 'seo_title' => 'Shelter & Social-Service Project Development Consulting',
                 'icon' => 'shelter',
+                'photo' => 'teamwork',
                 'short' => 'Planning, funding and partnership support for shelters and social-service initiatives.',
                 'summary' => 'Consulting and project development support for organizations exploring shelters and social-service initiatives: feasibility, funding, programs and partnerships.',
                 'intro' => [
@@ -270,6 +278,7 @@ class Services
                 'title' => 'Specialized Consulting & Strategic Partnerships',
                 'seo_title' => 'Specialized Consulting & Strategic Partnerships',
                 'icon' => 'network',
+                'photo' => 'network',
                 'short' => 'Not sure where you fit? We bring together the right expertise for complex challenges.',
                 'summary' => 'Multidisciplinary consulting that coordinates expertise across business, healthcare, disability management, funding and community development for challenges that span more than one field.',
                 'intro' => [

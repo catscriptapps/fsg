@@ -172,6 +172,92 @@ function initInquiryForms() {
 }
 
 /**
+ * Showcase slideshows (components/site/slideshow.php). The active tab's fill
+ * animation (--slide-ms) is the timer: when it ends, the next slide shows.
+ * Pausing (button, hover, keyboard focus, hidden tab) pauses that animation.
+ */
+function initSlideshows() {
+  document.querySelectorAll('[data-slideshow]').forEach((root) => {
+    if (root.dataset.ready) return;
+    root.dataset.ready = 'true';
+
+    const imgs = [...root.querySelectorAll('[data-slide-img]')];
+    const captions = [...root.querySelectorAll('[data-slide]')];
+    const tabs = [...root.querySelectorAll('[data-slide-tab]')];
+    const num = root.querySelector('[data-slide-num]');
+    const toggle = root.querySelector('[data-slide-toggle]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let userPaused = reduced; // no autoplay for reduced-motion visitors
+    let holds = 0;            // hover / focus / hidden-tab holds
+
+    const show = (next) => {
+      index = (next + imgs.length) % imgs.length;
+      imgs.forEach((el, i) => el.classList.toggle('is-active', i === index));
+      captions.forEach((el, i) => {
+        const on = i === index;
+        el.classList.toggle('is-active', on);
+        el.toggleAttribute('inert', !on);
+        if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true');
+      });
+      tabs.forEach((el, i) => {
+        el.setAttribute('aria-selected', String(i === index));
+        el.classList.toggle('is-done', i < index);
+      });
+      if (num) num.textContent = String(index + 1).padStart(2, '0');
+    };
+
+    const sync = () => {
+      const paused = userPaused || holds > 0;
+      root.classList.toggle('is-paused', paused);
+      toggle.querySelector('[data-icon-pause]').classList.toggle('hidden', userPaused);
+      toggle.querySelector('[data-icon-play]').classList.toggle('hidden', !userPaused);
+      toggle.querySelector('[data-toggle-label]').textContent = userPaused ? 'Play' : 'Pause';
+      toggle.setAttribute('aria-label', userPaused ? 'Play slideshow' : 'Pause slideshow');
+    };
+    const hold = (on) => { holds = Math.max(0, holds + (on ? 1 : -1)); sync(); };
+
+    // The active fill finishing = time for the next slide
+    root.addEventListener('animationend', (e) => {
+      if (e.animationName === 'slideFill' && !userPaused) show(index + 1);
+    });
+    root.querySelector('[data-slide-prev]').addEventListener('click', () => show(index - 1));
+    root.querySelector('[data-slide-next]').addEventListener('click', () => show(index + 1));
+    tabs.forEach((tab, i) => tab.addEventListener('click', () => show(i)));
+    toggle.addEventListener('click', () => { userPaused = !userPaused; sync(); });
+
+    root.addEventListener('mouseenter', () => hold(true));
+    root.addEventListener('mouseleave', () => hold(false));
+    root.addEventListener('focusin', () => hold(true));
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) hold(false); });
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1); }
+    });
+
+    // Swipe
+    let startX = null;
+    root.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') startX = e.clientX; });
+    root.addEventListener('pointerup', (e) => {
+      if (startX === null) return;
+      const dx = e.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+    });
+
+    // Don't run while the browser tab is hidden; stop for good once a partial load removes it
+    const onVisibility = () => {
+      if (!document.body.contains(root)) { document.removeEventListener('visibilitychange', onVisibility); return; }
+      hold(document.hidden);
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    show(0);
+    sync();
+  });
+}
+
+/**
  * Sign-in: every a[data-login-button] (header, mobile menu, footer) opens the
  * CatScript sign-in modal in place. The modal lives outside #main-content, so
  * one instance survives partial loads; on success it reloads this page.
@@ -195,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeader();
   initReveal();
   initInquiryForms();
+  initSlideshows();
 });
 
 // Router: title/summary of the page being loaded (fired before the swap)
@@ -207,4 +294,5 @@ document.body.addEventListener('partial-load', () => {
   updateMeta(pendingSummary);
   initReveal();
   initInquiryForms();
+  initSlideshows();
 });

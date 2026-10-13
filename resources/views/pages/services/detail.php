@@ -17,6 +17,7 @@ $hero = [
     'eyebrow' => 'Services',
     'title' => e($s['title']),
     'lead' => $s['short'],
+    'photo' => $s['photo'] ?? null,
     'crumbs' => [['Services', 'services'], [$s['title'], null]],
     'actions' => '<a data-partial href="' . site_url('contact?type=consultation&service=' . $s['slug']) . '" class="btn-gold">' . e($s['cta']) . ' ' . Icons::svg('arrow', 'h-4 w-4') . '</a>'
         . '<a href="#included" class="btn-outline-light">What’s included</a>',

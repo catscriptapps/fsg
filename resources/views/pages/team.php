@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Src\Content\Icons;
+use Src\Content\Photos;
 use Src\Content\Site;
 use Src\Content\Team;
 
@@ -18,6 +19,7 @@ $hero = [
     'eyebrow' => 'Our team',
     'title' => 'The right expertise, <em>brought together.</em>',
     'lead' => 'Our lead consultant works alongside a growing network of consultants and professional partners from different disciplines — so every client gets the expertise their situation calls for.',
+    'photo' => 'consult',
     'crumbs' => [['Our Team', null]],
 ];
 include __DIR__ . '/../components/site/page-hero.php';
@@ -78,6 +80,8 @@ include __DIR__ . '/../components/site/page-hero.php';
             <h2 class="display mt-5 text-4xl sm:text-5xl" data-reveal>A multidisciplinary <em>network.</em></h2>
             <p class="lead mt-6" data-reveal>We collaborate with consultants and partners across business, healthcare, disability management, funding, community development and related fields.</p>
         </div>
+
+        <div class="mx-auto mt-14 max-w-5xl"><?= Photos::frame('teamwork', 'aspect-[16/9] sm:aspect-[21/9]') ?></div>
 
         <?php if ($members): ?>
             <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

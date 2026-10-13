@@ -2,14 +2,25 @@
 // /resources/views/components/site/page-hero.php
 //
 // Dark hero for inner pages. Set $hero before including:
-//   eyebrow, title (may contain <em>), lead, crumbs [[label, path|null]...], actions (HTML)
+//   eyebrow, title (may contain <em>), lead, crumbs [[label, path|null]...], actions (HTML),
+//   photo (a Src\Content\Photos role — shown behind the hero, tinted with ink)
 
 use Src\Content\Icons;
+use Src\Content\Photos;
 
 $crumbs = $hero['crumbs'] ?? [];
+$heroPhoto = !empty($hero['photo']) ? Photos::get($hero['photo']) : null;
 ?>
 <section class="ink-surface relative overflow-hidden pb-20 pt-36 lg:pb-28 lg:pt-44">
-    <div aria-hidden="true" class="pointer-events-none absolute -right-10 top-1/2 hidden w-[30rem] -translate-y-1/2 opacity-30 lg:block"><?= Icons::waveform('w-full') ?></div>
+    <?php if ($heroPhoto): ?>
+        <div aria-hidden="true" class="absolute inset-0">
+            <img src="<?= e($heroPhoto['src']) ?>" alt="" class="hero-photo h-full w-full object-cover object-center" fetchpriority="high">
+            <div class="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-ink-950/45"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-ink-950/60"></div>
+        </div>
+    <?php else: ?>
+        <div aria-hidden="true" class="pointer-events-none absolute -right-10 top-1/2 hidden w-[30rem] -translate-y-1/2 opacity-30 lg:block"><?= Icons::waveform('w-full') ?></div>
+    <?php endif; ?>
     <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent"></div>
 
     <div class="site-container relative">

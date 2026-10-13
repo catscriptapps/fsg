@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Src\Content\Icons;
+use Src\Content\Photos;
 use Src\Content\Projects;
 use Src\Content\Site;
 
@@ -18,6 +19,7 @@ $hero = [
     'eyebrow' => 'Projects & partnerships',
     'title' => 'Stronger together: <em>collaboration in action.</em>',
     'lead' => 'Complex challenges are best addressed by bringing the right people and disciplines together. Here we highlight approved projects, collaborations and the partnerships behind them.',
+    'photo' => 'network',
     'crumbs' => [['Projects & Partnerships', null]],
     'actions' => '<a data-partial href="' . site_url('contact?type=partnership') . '" class="btn-gold">Partner With Us</a>',
 ];
@@ -83,8 +85,9 @@ include __DIR__ . '/../components/site/page-hero.php';
             <h2 class="display display-light mt-5 text-4xl sm:text-5xl" data-reveal>Let’s build something <em>meaningful.</em></h2>
             <p class="mt-6 text-lg leading-relaxed text-ink-300" data-reveal>We welcome conversations with consultants, community organizations, institutions and funders who share our commitment to equitable access and measurable impact.</p>
             <a data-partial href="<?= site_url('contact?type=partnership') ?>" class="btn-gold mt-10" data-reveal>Start a partnership conversation</a>
+            <div class="mt-12"><?= Photos::frame('teamwork', 'aspect-[4/3]') ?></div>
         </div>
-        <ul class="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+        <ul class="grid content-center gap-4 sm:grid-cols-2 lg:col-span-7">
             <?php foreach ([
                 ['expertise', 'Consultants & specialists', 'Professionals who can bring specialized expertise to multidisciplinary engagements.'],
                 ['community', 'Community organizations', 'Agencies and nonprofits working to improve access to services and resources.'],

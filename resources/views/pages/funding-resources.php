@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 use Src\Content\Icons;
+use Src\Content\Photos;
 use Src\Content\Services;
 
 $funding = Services::find('funding-strategy-grant-development');
@@ -15,6 +16,7 @@ $hero = [
     'eyebrow' => 'Funding & resources',
     'title' => 'Get ready for the <em>right funding.</em>',
     'lead' => 'Funding is more attainable when you know where to look and what funders expect. We help you find appropriate opportunities and prepare applications that clearly show your need, plan and impact.',
+    'photo' => 'advising',
     'crumbs' => [['Funding & Resources', null]],
     'actions' => '<a data-partial href="' . site_url('contact?type=consultation&service=' . $funding['slug']) . '" class="btn-gold">Explore Funding Support</a>'
         . '<a href="#readiness" class="btn-outline-light">Funding-readiness guide</a>',
@@ -48,6 +50,7 @@ $sources = [
             <h2 class="display mt-5 text-4xl sm:text-5xl" data-reveal>From research to a <em>ready-to-submit</em> application.</h2>
             <p class="lead mt-6" data-reveal><?= e($funding['intro'][0]) ?></p>
             <a data-partial href="<?= site_url('services/' . $funding['slug']) ?>" class="link-arrow mt-8" data-reveal>Full service details <?= Icons::svg('arrow') ?></a>
+            <div class="mt-10"><?= Photos::frame('meeting', 'aspect-[4/3]') ?></div>
         </div>
         <div class="lg:col-span-7">
             <ul class="grid gap-3 sm:grid-cols-2" data-reveal>

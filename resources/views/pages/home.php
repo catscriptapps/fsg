@@ -88,6 +88,9 @@ $testimonials = Testimonials::all();
     </div>
 </section>
 
+<!-- Showcase slideshow (Src\Content\Photos::SLIDES) -->
+<?php include __DIR__ . '/../components/site/slideshow.php'; ?>
+
 <!-- 3. Our philosophy -->
 <section class="relative overflow-hidden bg-white py-24 lg:py-32">
     <div class="site-container">

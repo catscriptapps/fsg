@@ -13,6 +13,7 @@ $hero = [
     'eyebrow' => 'Contact us',
     'title' => 'Let’s start with a <em>conversation.</em>',
     'lead' => 'Book a consultation, discuss a project, explore funding support or ask a question. Tell us a little about your situation and we’ll be in touch.',
+    'photo' => 'consult',
     'crumbs' => [['Contact', null]],
 ];
 include __DIR__ . '/../components/site/page-hero.php';
