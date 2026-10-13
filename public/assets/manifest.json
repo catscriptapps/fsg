@@ -1,0 +1,225 @@
+{
+  "_confirm-VjUZGJTv.min.js": {
+    "file": "js/confirm-VjUZGJTv.min.js",
+    "name": "confirm"
+  },
+  "_debounce-ikwS1dR6.min.js": {
+    "file": "js/debounce-ikwS1dR6.min.js",
+    "name": "debounce"
+  },
+  "_delete-factory-ehB9kID_.min.js": {
+    "file": "js/delete-factory-ehB9kID_.min.js",
+    "name": "delete-factory"
+  },
+  "_escape-html-CVt4dYnb.min.js": {
+    "file": "js/escape-html-CVt4dYnb.min.js",
+    "name": "escape-html"
+  },
+  "_form-validator-B40BFkZ0.min.js": {
+    "file": "js/form-validator-B40BFkZ0.min.js",
+    "name": "form-validator",
+    "imports": [
+      "_toast-CjCHkGmx.min.js"
+    ]
+  },
+  "_header-avatar-DF-huZtA.min.js": {
+    "file": "js/header-avatar-DF-huZtA.min.js",
+    "name": "header-avatar",
+    "imports": [
+      "_toast-CjCHkGmx.min.js"
+    ]
+  },
+  "_login-modal-DKsABmYB.min.js": {
+    "file": "js/login-modal-DKsABmYB.min.js",
+    "name": "login-modal",
+    "imports": [
+      "_modal-factory-C4kaNEVn.min.js",
+      "_form-validator-B40BFkZ0.min.js",
+      "_spinner-utils-BGUFcaGl.min.js",
+      "_toast-CjCHkGmx.min.js"
+    ]
+  },
+  "_modal-factory-C4kaNEVn.min.js": {
+    "file": "js/modal-factory-C4kaNEVn.min.js",
+    "name": "modal-factory"
+  },
+  "_preview-B3PUvf1N.min.js": {
+    "file": "js/preview-B3PUvf1N.min.js",
+    "name": "preview"
+  },
+  "_profile-modal-BkMXrpXj.min.js": {
+    "file": "js/profile-modal-BkMXrpXj.min.js",
+    "name": "profile-modal",
+    "imports": [
+      "_modal-factory-C4kaNEVn.min.js",
+      "_escape-html-CVt4dYnb.min.js",
+      "_form-validator-B40BFkZ0.min.js",
+      "_spinner-utils-BGUFcaGl.min.js",
+      "_table-pagination-count-nDddYpAJ.min.js"
+    ]
+  },
+  "_spa-router-tyO59RQ9.min.js": {
+    "file": "js/spa-router-tyO59RQ9.min.js",
+    "name": "spa-router"
+  },
+  "_spinner-utils-BGUFcaGl.min.js": {
+    "file": "js/spinner-utils-BGUFcaGl.min.js",
+    "name": "spinner-utils"
+  },
+  "_table-pagination-count-nDddYpAJ.min.js": {
+    "file": "js/table-pagination-count-nDddYpAJ.min.js",
+    "name": "table-pagination-count"
+  },
+  "_toast-CjCHkGmx.min.js": {
+    "file": "js/toast-CjCHkGmx.min.js",
+    "name": "toast"
+  },
+  "_unread-handler-zLLZr8AB.min.js": {
+    "file": "js/unread-handler-zLLZr8AB.min.js",
+    "name": "unread-handler"
+  },
+  "resources/css/app.css": {
+    "file": "css/app.min.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css",
+      "app.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "js/app.min.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_login-modal-DKsABmYB.min.js",
+      "_spa-router-tyO59RQ9.min.js",
+      "_modal-factory-C4kaNEVn.min.js",
+      "_spinner-utils-BGUFcaGl.min.js",
+      "_form-validator-B40BFkZ0.min.js",
+      "_unread-handler-zLLZr8AB.min.js",
+      "_toast-CjCHkGmx.min.js"
+    ],
+    "css": [
+      "css/app.min.css"
+    ]
+  },
+  "resources/js/pages/history-page.js": {
+    "file": "js/history-page.min.js",
+    "name": "history-page",
+    "src": "resources/js/pages/history-page.js",
+    "isEntry": true,
+    "imports": [
+      "_table-pagination-count-nDddYpAJ.min.js",
+      "_toast-CjCHkGmx.min.js",
+      "_delete-factory-ehB9kID_.min.js"
+    ]
+  },
+  "resources/js/pages/live-chat-page.js": {
+    "file": "js/live-chat-page.min.js",
+    "name": "live-chat-page",
+    "src": "resources/js/pages/live-chat-page.js",
+    "isEntry": true,
+    "imports": [
+      "_toast-CjCHkGmx.min.js",
+      "_confirm-VjUZGJTv.min.js"
+    ]
+  },
+  "resources/js/pages/messages-page.js": {
+    "file": "js/messages-page.min.js",
+    "name": "messages-page",
+    "src": "resources/js/pages/messages-page.js",
+    "isEntry": true,
+    "imports": [
+      "_toast-CjCHkGmx.min.js",
+      "_confirm-VjUZGJTv.min.js",
+      "_debounce-ikwS1dR6.min.js",
+      "_escape-html-CVt4dYnb.min.js",
+      "_unread-handler-zLLZr8AB.min.js"
+    ]
+  },
+  "resources/js/pages/profile-page.js": {
+    "file": "js/profile-page.min.js",
+    "name": "profile-page",
+    "src": "resources/js/pages/profile-page.js",
+    "isEntry": true,
+    "imports": [
+      "_profile-modal-BkMXrpXj.min.js",
+      "_header-avatar-DF-huZtA.min.js",
+      "_toast-CjCHkGmx.min.js",
+      "_spa-router-tyO59RQ9.min.js",
+      "_delete-factory-ehB9kID_.min.js",
+      "_preview-B3PUvf1N.min.js",
+      "_modal-factory-C4kaNEVn.min.js",
+      "_escape-html-CVt4dYnb.min.js",
+      "_form-validator-B40BFkZ0.min.js",
+      "_spinner-utils-BGUFcaGl.min.js",
+      "_table-pagination-count-nDddYpAJ.min.js"
+    ],
+    "css": [
+      "css/profile-page.min.css"
+    ]
+  },
+  "resources/js/pages/reset-password-page.js": {
+    "file": "js/reset-password-page.min.js",
+    "name": "reset-password-page",
+    "src": "resources/js/pages/reset-password-page.js",
+    "isEntry": true,
+    "imports": [
+      "_form-validator-B40BFkZ0.min.js",
+      "_spinner-utils-BGUFcaGl.min.js",
+      "_toast-CjCHkGmx.min.js"
+    ]
+  },
+  "resources/js/pages/settings-page.js": {
+    "file": "js/settings-page.min.js",
+    "name": "settings-page",
+    "src": "resources/js/pages/settings-page.js",
+    "isEntry": true,
+    "imports": [
+      "_toast-CjCHkGmx.min.js",
+      "_confirm-VjUZGJTv.min.js",
+      "_escape-html-CVt4dYnb.min.js",
+      "_header-avatar-DF-huZtA.min.js",
+      "_delete-factory-ehB9kID_.min.js",
+      "_preview-B3PUvf1N.min.js",
+      "_modal-factory-C4kaNEVn.min.js",
+      "_form-validator-B40BFkZ0.min.js"
+    ]
+  },
+  "resources/js/pages/users-page.js": {
+    "file": "js/users-page.min.js",
+    "name": "users-page",
+    "src": "resources/js/pages/users-page.js",
+    "isEntry": true,
+    "imports": [
+      "_modal-factory-C4kaNEVn.min.js",
+      "_toast-CjCHkGmx.min.js",
+      "_confirm-VjUZGJTv.min.js",
+      "_debounce-ikwS1dR6.min.js",
+      "_escape-html-CVt4dYnb.min.js",
+      "_profile-modal-BkMXrpXj.min.js",
+      "_header-avatar-DF-huZtA.min.js",
+      "_form-validator-B40BFkZ0.min.js",
+      "_spinner-utils-BGUFcaGl.min.js",
+      "_table-pagination-count-nDddYpAJ.min.js"
+    ]
+  },
+  "resources/js/site.js": {
+    "file": "js/site.min.js",
+    "name": "site",
+    "src": "resources/js/site.js",
+    "isEntry": true,
+    "imports": [
+      "_login-modal-DKsABmYB.min.js",
+      "_escape-html-CVt4dYnb.min.js",
+      "_spa-router-tyO59RQ9.min.js",
+      "_modal-factory-C4kaNEVn.min.js",
+      "_form-validator-B40BFkZ0.min.js",
+      "_toast-CjCHkGmx.min.js",
+      "_spinner-utils-BGUFcaGl.min.js"
+    ]
+  }
+}

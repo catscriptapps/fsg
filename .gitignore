@@ -1,0 +1,25 @@
+# Dependencies (composer install / npm install recreate these)
+node_modules/
+vendor/
+
+# Environment — per server, holds secrets. Copy .env.example to .env.
+.env
+
+# Runtime data written by the app
+server/storage/
+public/images/uploads/**/*
+!public/images/uploads/**/
+!public/images/uploads/**/.gitkeep
+
+# Logs
+*.log
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Headless Chrome test profile (CDP-based testing artifacts)
+.chrome-test-profile/
+chrome-log.txt
