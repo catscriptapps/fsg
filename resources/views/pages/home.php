@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use Src\Content\Company;
 use Src\Content\Icons;
+use Src\Content\Photos;
 use Src\Content\Services;
 use Src\Content\Site;
 use Src\Content\Team;
@@ -19,6 +20,14 @@ $testimonials = Testimonials::all();
 
 <!-- 1. Hero -->
 <section class="ink-surface relative overflow-hidden">
+    <?php if ($heroPhoto = Photos::get('home.hero')): ?>
+        <!-- Faint photo, toned to the hero's ink-and-gold (spot: Site Photos → Home · Hero background) -->
+        <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+            <img src="<?= e($heroPhoto['src']) ?>" alt="" class="home-hero-photo h-full w-full object-cover" fetchpriority="high">
+            <div class="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/70 to-ink-950/10"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/60"></div>
+        </div>
+    <?php endif; ?>
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_45%,rgba(224,193,144,0.10),transparent_45%)]"></div>
     <div class="site-container relative grid min-h-[100svh] items-center gap-12 pb-24 pt-32 lg:grid-cols-12 lg:pb-20 lg:pt-28">
         <div class="lg:col-span-7">

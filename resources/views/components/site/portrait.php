@@ -2,15 +2,22 @@
 // /resources/views/components/site/portrait.php
 //
 // A consultant's portrait: their photo when one is set ($person['photo'],
-// a path under public/), otherwise an ink-and-gold monogram.
+// a path under public/ — or, for the lead consultant, the photo in the
+// 'team.lead' spot chosen in the admin under Site Photos), otherwise an
+// ink-and-gold monogram.
 
 use Src\Content\Icons;
+use Src\Content\Photos;
+use Src\Content\Team;
 
 $initials = implode('', array_map(fn($w) => mb_substr($w, 0, 1), array_slice(explode(' ', $person['name']), 0, 2)));
+$portraitSrc = !empty($person['photo'])
+    ? $assetBase . $person['photo']
+    : (($person['slug'] ?? '') === Team::lead()['slug'] ? (Photos::get('team.lead')['src'] ?? null) : null);
 ?>
 <div class="relative aspect-[4/5] w-full overflow-hidden rounded-[1.75rem] bg-ink-950 shadow-2xl shadow-ink-950/25">
-    <?php if (!empty($person['photo'])): ?>
-        <img src="<?= $assetBase . e($person['photo']) ?>" alt="<?= e($person['name'] . ', ' . $person['role']) ?>" class="h-full w-full object-cover" loading="lazy">
+    <?php if ($portraitSrc): ?>
+        <img src="<?= e($portraitSrc) ?>" alt="<?= e($person['name'] . ', ' . $person['role']) ?>" class="h-full w-full object-cover" loading="lazy">
     <?php else: ?>
         <div class="ink-surface absolute inset-0"></div>
         <div aria-hidden="true" class="absolute inset-x-0 bottom-0 opacity-20"><?= Icons::waveform('w-full') ?></div>

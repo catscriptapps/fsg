@@ -833,3 +833,11 @@ th[data-sort].sort-desc::after {
 .hero-photo { filter: saturate(.75) contrast(1.05); animation: heroDrift 24s ease-out forwards; }
 @keyframes heroDrift { from { transform: scale(1.1); } to { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .hero-photo { animation: none; } }
+
+/* Home hero photo: faint and toned to the hero's ink and gold (pages/home.php) */
+.home-hero-photo {
+    opacity: .45;
+    filter: grayscale(1) sepia(.85) saturate(1.35) hue-rotate(-8deg) brightness(.78) contrast(1.1);
+    animation: heroDrift 30s ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) { .home-hero-photo { animation: none; } }

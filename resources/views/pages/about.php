@@ -15,7 +15,7 @@ $hero = [
     'eyebrow' => 'About us',
     'title' => 'We listen first. Then we build the <em>way forward.</em>',
     'lead' => 'A Black-owned, women-led consulting company bringing professionals from different disciplines together to help organizations and individuals solve complex problems and turn ideas into achievable outcomes.',
-    'photo' => 'teamwork',
+    'photo' => 'about.hero', // photo spot — chosen in the admin under Site Photos
     'crumbs' => [['About Us', null]],
 ];
 include __DIR__ . '/../components/site/page-hero.php';
@@ -27,7 +27,7 @@ include __DIR__ . '/../components/site/page-hero.php';
         <div class="lg:col-span-5">
             <p class="eyebrow" data-reveal>Who we are</p>
             <h2 class="display mt-5 text-4xl sm:text-5xl" data-reveal>Strategy, expertise and resources — <em>connected.</em></h2>
-            <div class="mt-10"><?= Photos::frame('meeting', 'aspect-[4/3]') ?></div>
+            <div class="mt-10"><?= Photos::frame('about.overview', 'aspect-[4/3]') ?></div>
             <div class="relative z-10 mx-4 -mt-12 rounded-2xl border-l-2 border-gold-500 bg-white px-7 py-6 shadow-lg sm:mx-8" data-reveal>
                 <p class="font-serif text-2xl italic leading-snug text-ink-900">“We are not simply providing advice. We work to connect strategy with implementation.”</p>
             </div>

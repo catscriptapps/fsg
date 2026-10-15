@@ -22,12 +22,9 @@
       "_toast-CjCHkGmx.min.js"
     ]
   },
-  "_header-avatar-DF-huZtA.min.js": {
-    "file": "js/header-avatar-DF-huZtA.min.js",
-    "name": "header-avatar",
-    "imports": [
-      "_toast-CjCHkGmx.min.js"
-    ]
+  "_header-avatar-C_NsaBTf.min.js": {
+    "file": "js/header-avatar-C_NsaBTf.min.js",
+    "name": "header-avatar"
   },
   "_login-modal-DKsABmYB.min.js": {
     "file": "js/login-modal-DKsABmYB.min.js",
@@ -77,6 +74,13 @@
   "_unread-handler-zLLZr8AB.min.js": {
     "file": "js/unread-handler-zLLZr8AB.min.js",
     "name": "unread-handler"
+  },
+  "_upload-modal-BDCuzSXE.min.js": {
+    "file": "js/upload-modal-BDCuzSXE.min.js",
+    "name": "upload-modal",
+    "imports": [
+      "_toast-CjCHkGmx.min.js"
+    ]
   },
   "resources/css/app.css": {
     "file": "css/app.min.css",
@@ -146,11 +150,12 @@
     "isEntry": true,
     "imports": [
       "_profile-modal-BkMXrpXj.min.js",
-      "_header-avatar-DF-huZtA.min.js",
+      "_upload-modal-BDCuzSXE.min.js",
       "_toast-CjCHkGmx.min.js",
       "_spa-router-tyO59RQ9.min.js",
       "_delete-factory-ehB9kID_.min.js",
       "_preview-B3PUvf1N.min.js",
+      "_header-avatar-C_NsaBTf.min.js",
       "_modal-factory-C4kaNEVn.min.js",
       "_escape-html-CVt4dYnb.min.js",
       "_form-validator-B40BFkZ0.min.js",
@@ -181,11 +186,25 @@
       "_toast-CjCHkGmx.min.js",
       "_confirm-VjUZGJTv.min.js",
       "_escape-html-CVt4dYnb.min.js",
-      "_header-avatar-DF-huZtA.min.js",
+      "_upload-modal-BDCuzSXE.min.js",
       "_delete-factory-ehB9kID_.min.js",
       "_preview-B3PUvf1N.min.js",
+      "_header-avatar-C_NsaBTf.min.js",
       "_modal-factory-C4kaNEVn.min.js",
       "_form-validator-B40BFkZ0.min.js"
+    ]
+  },
+  "resources/js/pages/site-photos-page.js": {
+    "file": "js/site-photos-page.min.js",
+    "name": "site-photos-page",
+    "src": "resources/js/pages/site-photos-page.js",
+    "isEntry": true,
+    "imports": [
+      "_upload-modal-BDCuzSXE.min.js",
+      "_modal-factory-C4kaNEVn.min.js",
+      "_toast-CjCHkGmx.min.js",
+      "_confirm-VjUZGJTv.min.js",
+      "_escape-html-CVt4dYnb.min.js"
     ]
   },
   "resources/js/pages/users-page.js": {
@@ -200,7 +219,8 @@
       "_debounce-ikwS1dR6.min.js",
       "_escape-html-CVt4dYnb.min.js",
       "_profile-modal-BkMXrpXj.min.js",
-      "_header-avatar-DF-huZtA.min.js",
+      "_upload-modal-BDCuzSXE.min.js",
+      "_header-avatar-C_NsaBTf.min.js",
       "_form-validator-B40BFkZ0.min.js",
       "_spinner-utils-BGUFcaGl.min.js",
       "_table-pagination-count-nDddYpAJ.min.js"

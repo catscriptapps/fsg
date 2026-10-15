@@ -3,7 +3,8 @@
 //
 // Home page showcase: a crossfading, slowly-zooming photo panel beside a
 // dark caption panel, with prev/next, pause/play and gold progress tabs.
-// Slides come from Src\Content\Photos::SLIDES. site.js (initSlideshows)
+// Slides come from Src\Content\Photos::slides() — the photo library, in the
+// order and with the captions set in the admin (Site Photos). site.js (initSlideshows)
 // drives it: each tab's fill animation sets the pace, and its end advances
 // to the next slide. Works as a static first slide without JS.
 
@@ -47,8 +48,8 @@ $count = count($slides);
                             role="group" aria-roledescription="slide" aria-label="<?= $i + 1 ?> of <?= $count ?>" <?= $i === 0 ? '' : 'aria-hidden="true" inert' ?>>
                             <p class="eyebrow eyebrow-light"><?= e($s['eyebrow']) ?></p>
                             <h3 class="display display-light mt-6 text-4xl leading-[1.08] sm:text-5xl"><?= $s['title'] ?></h3>
-                            <p class="mt-6 text-lg leading-relaxed text-ink-200"><?= e($s['text']) ?></p>
-                            <a data-partial href="<?= site_url($s['link']) ?>" class="link-arrow mt-8 !text-gold-300 hover:!text-gold-200"><?= e($s['cta']) ?> <?= Icons::svg('arrow') ?></a>
+                            <?php if ($s['text'] !== ''): ?><p class="mt-6 text-lg leading-relaxed text-ink-200"><?= e($s['text']) ?></p><?php endif; ?>
+                            <?php if ($s['cta'] !== '' && $s['link'] !== ''): ?><a data-partial href="<?= site_url($s['link']) ?>" class="link-arrow mt-8 !text-gold-300 hover:!text-gold-200"><?= e($s['cta']) ?> <?= Icons::svg('arrow') ?></a><?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 </div>

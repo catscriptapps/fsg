@@ -14,7 +14,7 @@ $hero = [
     'eyebrow' => 'Our services',
     'title' => 'Consulting built around <em>your goals.</em>',
     'lead' => 'From funding strategy and business planning to healthcare, disability case management and community projects — multidisciplinary expertise, coordinated around what you need.',
-    'photo' => 'meeting',
+    'photo' => 'services.hero', // photo spot — chosen in the admin under Site Photos
     'crumbs' => [['Services', null]],
     'actions' => '<a data-partial href="' . site_url('contact?type=consultation') . '" class="btn-gold">Request Consulting Services</a>'
         . '<a href="#all-services" class="btn-outline-light">Browse the services</a>',

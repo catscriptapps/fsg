@@ -42,7 +42,7 @@ class AuthService
      * Admin-only areas — never assignable. (Messages is the site's contact-
      * form inbox, not member-to-member messaging.)
      */
-    public const ADMIN_ONLY_APPS = ['users', 'messages'];
+    public const ADMIN_ONLY_APPS = ['users', 'messages', 'site photos'];
 
     /**
      * Capabilities that ride along with an app (app => capability), stored in
