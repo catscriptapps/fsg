@@ -10,6 +10,7 @@ server/storage/
 public/images/uploads/**/*
 !public/images/uploads/**/
 !public/images/uploads/**/.gitkeep
+!public/images/uploads/posts/.htaccess
 
 # Logs
 *.log

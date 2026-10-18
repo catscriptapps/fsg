@@ -130,6 +130,19 @@
       "_confirm-VjUZGJTv.min.js"
     ]
   },
+  "resources/js/pages/live-feed-page.js": {
+    "file": "js/live-feed-page.min.js",
+    "name": "live-feed-page",
+    "src": "resources/js/pages/live-feed-page.js",
+    "isEntry": true,
+    "imports": [
+      "_toast-CjCHkGmx.min.js",
+      "_confirm-VjUZGJTv.min.js",
+      "_modal-factory-C4kaNEVn.min.js",
+      "_upload-modal-BDCuzSXE.min.js",
+      "_escape-html-CVt4dYnb.min.js"
+    ]
+  },
   "resources/js/pages/messages-page.js": {
     "file": "js/messages-page.min.js",
     "name": "messages-page",

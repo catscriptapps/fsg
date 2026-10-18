@@ -1,0 +1,7 @@
+# Live Feed uploads (photos and videos): served as files only. The uploaders
+# only ever save .jpg / video names, and this refuses anything script-like
+# besides (mod_rewrite, which the app already relies on).
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule \.(php[0-9]?|phtml|phar|pl|py|cgi|sh)$ - [F,NC]
+</IfModule>

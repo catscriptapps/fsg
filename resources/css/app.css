@@ -841,3 +841,17 @@ th[data-sort].sort-desc::after {
     animation: heroDrift 30s ease-out forwards;
 }
 @media (prefers-reduced-motion: reduce) { .home-hero-photo { animation: none; } }
+
+/* Live Feed emoji picker (utils/live-feed/emoji-picker.js) */
+.emoji-picker-popover {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: emoji-pop 0.18s ease-out;
+}
+@keyframes emoji-pop {
+    from { opacity: 0; transform: translateY(6px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .emoji-picker-popover { animation: none; }
+}

@@ -38,6 +38,7 @@ class FaqsController
         'getting-started' => ['Getting started', 'Start here', '🚀', 'What this is, finding your way around, and the basics.'],
         'account'         => ['Account & sign-in', 'Start here', '🔐', 'Signing in, passwords, your profile and photo.'],
         'privacy'         => ['Privacy & access', 'Start here', '🛡️', 'Who can see what, and app access.'],
+        'live-feed'       => ['Live Feed', 'Community', '📣', 'Posts, photos, videos, likes, comments and following.'],
         'live-chat'       => ['Live chat', 'Community', '🗨️', 'The chat bubble on every page.'],
         'contact'         => ['Contact & support', 'Help', '✉️', 'Getting in touch and reporting problems.'],
         'admin'           => ['Admin tools', 'Admin', '👑', 'Users, app access, Messages, the chat inbox and updates.'],

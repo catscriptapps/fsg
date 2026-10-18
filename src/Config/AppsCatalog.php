@@ -60,6 +60,15 @@ class AppsCatalog
                 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />',
             ],
             [
+                'name' => 'Live Feed',
+                'text' => 'Updates, photos and videos from across the team, live — with likes, comments and people to follow.',
+                'category' => 'Stay In Touch',
+                'slug' => 'live-feed',
+                'live' => true,
+                'highlights' => ['Posts with a photo or video', 'Likes and comments', 'Everyone, or just the people you follow'],
+                'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9.348 14.651a3.75 3.75 0 010-5.303m5.304 0a3.75 3.75 0 010 5.303m-7.425 2.122a6.75 6.75 0 010-9.546m9.546 0a6.75 6.75 0 010 9.546M5.106 18.894c-3.808-3.808-3.808-9.98 0-13.789m13.788 0c3.808 3.808 3.808 9.981 0 13.79M12 12h.008v.007H12V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />',
+            ],
+            [
                 'name' => 'Live Chat',
                 'text' => 'A chat bubble on every page — visitors and members talk to an admin in real time, with optional AI answers from the FAQs.',
                 'category' => 'Stay In Touch',

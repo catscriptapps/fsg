@@ -41,6 +41,9 @@ class UsersController
                 $userName = $user->full_name;
                 $userEmail = $user->email;
 
+                // Their Live Feed posts (with photos / videos), comments, likes and follows
+                LiveFeedController::deleteAllFor((int) $user->id);
+
                 if ($user->delete()) {
                     static::logActivity("Deleted user account: {$userName} ({$userEmail})", 'Users');
                     return ['success' => true, 'messages' => ['User deleted successfully.']];

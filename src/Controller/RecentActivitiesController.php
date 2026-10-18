@@ -71,6 +71,7 @@ class RecentActivitiesController
         $row['icon'] = match ($activity->entity_type) {
             'Users'     => '👤',
             'Message'   => '✉️',
+            'Live Feed' => '📣',
             'Site'      => '🖼️',
             'FAQ'       => '❓',
             default     => '⚙️'
