@@ -8,16 +8,9 @@
 return [
 
     ['live-feed', 'What is the Live Feed?', <<<'TXT'
-The [Live Feed](/live-feed) is where members share updates with each other — a few words, a photo or a video. Everyone signed in can read it, like posts and join the conversation in the comments.
+The [Live Feed](/live-feed) is the team’s public news feed on the website — a few words, a photo or a video. Anyone visiting the site can read the posts and comments; signed-in staff and admins share posts, like them and comment.
 
 It's live: new posts, likes and comments show up on their own while you have it open, without reloading.
-TXT],
-
-    ['live-feed', 'What’s the difference between Everyone and Following?', <<<'TXT'
-- **Everyone** — every member's posts, newest first.
-- **Following** — just your own posts and those of the people you follow.
-
-Switch between them at the top of the [Live Feed](/live-feed). Your choice is in the page address, so a bookmark to the Following view opens straight to it.
 TXT],
 
     ['live-feed', 'How do I share a post?', <<<'TXT'
@@ -40,12 +33,6 @@ TXT],
 Tap the **heart** to like a post (tap again to undo). Tap **Comment** — or a post's photo — to open the post with its comments; type in the box at the bottom and press **Enter** to send (Shift+Enter starts a new line).
 TXT],
 
-    ['live-feed', 'How do I follow people?', <<<'TXT'
-Use **People to follow** on the right of the [Live Feed](/live-feed), or search for someone by name in **Find people**, and click **Follow**. Their posts then appear in your **Following** view.
-
-Click **Following** or **Followers** on your card to see those lists — you can follow back or unfollow from there too.
-TXT],
-
     ['live-feed', 'Can I delete a post or comment?', <<<'TXT'
 Yes — your own. Open the **⋯** menu on your post and choose **Delete post** (its comments and likes go with it), or hover over your comment and click **Delete**.
 
@@ -53,6 +40,6 @@ Admins can also remove anyone's post or comment, to keep the feed tidy.
 TXT],
 
     ['live-feed', 'Who can see what I post?', <<<'TXT'
-Every signed-in member. The Live Feed is never shown to visitors who aren't signed in, and it isn't public on the website.
+Everyone. The Live Feed is public on the website, so visitors who aren't signed in can read every post, photo, video and comment — they just can't like, comment or post. Share only what you'd be happy for clients and the public to see, and never confidential client information.
 TXT],
 ];

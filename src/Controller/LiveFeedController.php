@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Src\Controller;
 
-use App\Models\Follow;
 use App\Models\Post;
 use App\Models\PostComment;
 use App\Models\PostLike;
@@ -15,26 +14,25 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Src\Service\AuthService;
 
 /**
- * Live Feed — members' updates: text / photo / video posts, likes and
- * comments (follows live in FollowsController). Retrofitted from the
- * CatScript Apps Social Feed:
+ * Live Feed — the team's public updates: text / photo / video posts, likes
+ * and comments. Retrofitted from the CatScript Apps Social Feed:
  *
- *  - two views: "everyone" (every member's posts — the default) and
- *    "following" (your posts + people you follow, as the Social Feed was);
+ *  - public: anyone, signed in or not, can read the posts and comments
+ *    (viewer id 0 = a guest); signed-in staff and admins post, like and
+ *    comment (server/api/live-feed.php guards every write);
  *  - pages of PER_PAGE posts ("Load older posts"), and a signature of the
  *    first page so the page's 30-second live check only redraws on real
  *    changes (not just "5 minutes ago" ticking over);
  *  - authors can delete their own posts and comments; admins can remove
  *    anyone's (moderation);
- *  - deleteAllFor() clears a member's posts, comments, likes and follows
- *    when their account is deleted.
+ *  - deleteAllFor() clears a member's posts, comments and likes when their
+ *    account is deleted.
  */
 class LiveFeedController
 {
     use RecentActivityLogger;
 
     public const PER_PAGE = 15;
-    public const SCOPES = ['everyone', 'following'];
 
     /** Where post photos and videos live, under public/. */
     public const MEDIA_DIR = 'images/uploads/posts/';
@@ -46,28 +44,21 @@ class LiveFeedController
     // Reads
     // ============================================================
 
-    public static function feed(int $viewerId, string $scope = 'everyone', int $page = 1): LengthAwarePaginator
+    public static function feed(int $page = 1): LengthAwarePaginator
     {
-        $query = Post::query()->with(['user', 'likes', 'comments.user']);
-
-        if ($scope === 'following') {
-            $followedIds = Follow::where('follower_id', $viewerId)->pluck('following_id')->all();
-            $query->fromAuthors(array_unique(array_merge([$viewerId], $followedIds)));
-        }
-
-        return $query->orderByDesc('created_at')->orderByDesc('post_id')
+        return Post::query()->with(['user', 'likes', 'comments.user'])->orderByDesc('created_at')->orderByDesc('post_id')
             ->paginate(self::PER_PAGE, ['*'], 'page', max(1, $page));
     }
 
     /**
      * One page of the feed as card HTML, plus what the page needs to page
      * further and to notice changes (sig: posts, likes and comments on it).
+     * $viewerId 0 = a guest (read-only cards).
      * @return array{html: string, has_more: bool, next_page: int, sig: string, total: int}
      */
-    public static function page(int $viewerId, string $scope, int $page): array
+    public static function page(int $viewerId, int $page): array
     {
-        $scope = in_array($scope, self::SCOPES, true) ? $scope : 'everyone';
-        $posts = self::feed($viewerId, $scope, $page);
+        $posts = self::feed($page);
 
         $html = '';
         $sig = [];
@@ -80,7 +71,7 @@ class LiveFeedController
             'html'      => $html,
             'has_more'  => $posts->hasMorePages(),
             'next_page' => $posts->currentPage() + 1,
-            'sig'       => md5($scope . '|' . implode(',', $sig)),
+            'sig'       => md5(implode(',', $sig)),
             'total'     => $posts->total(),
         ];
     }
@@ -241,7 +232,6 @@ class LiveFeedController
         }
         PostComment::where('orig_user_id', $userId)->delete();
         PostLike::where('orig_user_id', $userId)->delete();
-        Follow::where('follower_id', $userId)->orWhere('following_id', $userId)->delete();
     }
 
     // ============================================================
@@ -251,7 +241,7 @@ class LiveFeedController
     public static function renderPostCard(Post $post, int $viewerId): string
     {
         $author = $post->user;
-        $isOwn = (int) $post->orig_user_id === $viewerId;
+        $isOwn = $viewerId > 0 && (int) $post->orig_user_id === $viewerId;
 
         $data = [
             'encoded_id'    => IdEncoder::encode((int) $post->post_id),
@@ -263,10 +253,11 @@ class LiveFeedController
             'time_ago'      => $post->created_at?->diffForHumans() ?? '',
             'like_count'    => $post->likes->count(),
             'comment_count' => $post->comments->count(),
-            'is_liked'      => $post->likes->contains(fn($like) => (int) $like->orig_user_id === $viewerId),
+            'is_liked'      => $viewerId > 0 && $post->likes->contains(fn($like) => (int) $like->orig_user_id === $viewerId),
+            'can_interact'  => $viewerId > 0, // guests see the counts, not the buttons
             'media_url'     => $post->media_url,
             'media_type'    => $post->media_type,
-            'can_delete'    => $isOwn || AuthService::isAdmin(),
+            'can_delete'    => $isOwn || ($viewerId > 0 && AuthService::isAdmin()),
             'is_own'        => $isOwn,
         ];
 
@@ -285,7 +276,7 @@ class LiveFeedController
             'author_avatar' => $author->avatar_url ?? null,
             'comment_text'  => $comment->comment_text,
             'time_ago'      => $comment->created_at?->diffForHumans() ?? '',
-            'can_delete'    => (int) $comment->orig_user_id === $viewerId || AuthService::isAdmin(),
+            'can_delete'    => $viewerId > 0 && ((int) $comment->orig_user_id === $viewerId || AuthService::isAdmin()),
         ];
 
         $assetBase = getAssetBase();

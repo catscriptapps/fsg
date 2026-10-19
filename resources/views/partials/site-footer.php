@@ -7,7 +7,7 @@ use Src\Content\Site;
 
 $explore = [
     ['About Us', 'about'], ['Our Team', 'team'], ['Funding & Resources', 'funding-resources'],
-    ['Projects & Partnerships', 'projects'], ['Testimonials', 'testimonials'], ['FAQs', 'faqs'], ['Contact', 'contact'],
+    ['Projects & Partnerships', 'projects'], ['Live Feed', 'live-feed'], ['Testimonials', 'testimonials'], ['FAQs', 'faqs'], ['Contact', 'contact'],
 ];
 ?>
 <footer class="ink-surface relative overflow-hidden text-ink-200">

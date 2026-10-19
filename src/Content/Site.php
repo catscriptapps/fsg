@@ -46,6 +46,7 @@ class Site
             ['label' => 'About', 'path' => 'about', 'children' => [
                 ['label' => 'About Us', 'path' => 'about', 'note' => 'Who we are and what drives us'],
                 ['label' => 'Our Team', 'path' => 'team', 'note' => 'Our lead consultant and network'],
+                ['label' => 'Live Feed', 'path' => 'live-feed', 'note' => 'News, photos and updates from our team'],
                 ['label' => 'Testimonials', 'path' => 'testimonials', 'note' => 'In our clients’ words'],
                 ['label' => 'FAQs', 'path' => 'faqs', 'note' => 'Answers to common questions'],
             ]],
@@ -88,6 +89,10 @@ class Site
             'projects' => [
                 'Projects & Partnerships',
                 'Collaborations, partnerships and project work from Frequency Strategy Group — and how to partner with us.',
+            ],
+            'live-feed' => [
+                'Live Feed — News & Updates',
+                'News, photos, videos and updates from the Frequency Strategy Group team.',
             ],
             'testimonials' => [
                 'Client Testimonials',

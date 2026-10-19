@@ -1,148 +1,115 @@
 <?php
 // /resources/views/pages/live-feed.php
 //
-// Live Feed — members share updates, photos and videos, like and comment.
-// Two views: Everyone (every member's posts) and Following (yours + people
-// you follow). The first page is rendered here; pages/live-feed-page.js
-// pages further, checks for new activity every 30 seconds, and runs the
-// composer, post window and follow tools (utils/live-feed/*).
-// Retrofitted from the CatScript Apps Social Feed.
-//
-// @var string $assetBase
-// @var string $baseUrl
+// Live Feed — the team's public news feed, in the public website layout.
+// Everyone (guests included) reads the posts, photos, videos, likes and
+// comments; signed-in staff and admins also post, like and comment (the API
+// guards every write — server/api/live-feed.php). The first page is
+// rendered here; site.js runs utils/live-feed/* (paging, 30-second live
+// updates, the composer and the post window).
 
 declare(strict_types=1);
 
-use Src\Controller\FollowsController;
+use Src\Content\Icons;
 use Src\Controller\LiveFeedController;
 use Src\Service\AuthService;
 
-if (!AuthService::hasAccess('Live Feed')) {
-    include __DIR__ . '/access-denied.php';
-    return;
-}
+$me = AuthService::isLoggedIn() ? AuthService::currentUser() : null;
+$meId = $me ? (int) $me->id : 0;
+$canPost = $me && AuthService::hasAccess('Live Feed');
+$first = LiveFeedController::page($meId, 1);
 
-$e = fn($v) => htmlspecialchars((string) $v, ENT_QUOTES, 'UTF-8');
-$me = AuthService::currentUser();
-$meId = (int) $me->id;
-$scope = ($_GET['view'] ?? '') === 'following' ? 'following' : 'everyone';
-$first = LiveFeedController::page($meId, $scope, 1);
-$stats = FollowsController::stats($meId);
-$myPosts = LiveFeedController::postCount($meId);
-$meAvatar = !empty($me->avatar_url) ? $assetBase . 'images/uploads/avatars/' . $me->avatar_url : null;
-$meInitial = strtoupper(mb_substr($me->full_name ?: 'U', 0, 1));
-
+$meAvatar = $me && !empty($me->avatar_url) ? $assetBase . 'images/uploads/avatars/' . $me->avatar_url : null;
 $avatar = fn(string $size) => $meAvatar
-    ? '<img src="' . $e($meAvatar) . '" alt="" class="' . $size . ' flex-shrink-0 rounded-full object-cover">'
-    : '<span class="' . $size . ' flex-shrink-0 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold">' . $e($meInitial) . '</span>';
+    ? '<img src="' . e($meAvatar) . '" alt="" class="' . $size . ' flex-shrink-0 rounded-full object-cover">'
+    : '<span class="' . $size . ' flex flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold-300 to-gold-600 font-serif text-ink-950">' . e(strtoupper(mb_substr($me->full_name ?? 'F', 0, 1))) . '</span>';
 
-$emptyState = static function (string $scope): string {
-    return $scope === 'following'
-        ? '<div data-empty-feed class="rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-900/60 px-6 py-12 text-center"><p class="text-3xl mb-2">👋</p><h3 class="text-sm font-bold text-gray-900 dark:text-white">Nothing here yet</h3><p class="mx-auto mt-1 max-w-sm text-sm text-gray-500 dark:text-gray-400">Follow people from “People to follow” and their posts will show up here, alongside your own.</p></div>'
-        : '<div data-empty-feed class="rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-900/60 px-6 py-12 text-center"><p class="text-3xl mb-2">✨</p><h3 class="text-sm font-bold text-gray-900 dark:text-white">The feed is quiet</h3><p class="mx-auto mt-1 max-w-sm text-sm text-gray-500 dark:text-gray-400">Be the first to share an update, a photo or a video with the team.</p></div>';
-};
+$emptyState = '<div data-empty-feed class="rounded-2xl border border-dashed border-gold-500/40 bg-white/60 px-6 py-14 text-center">'
+    . '<span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gold-500/40 text-gold-700">' . Icons::svg('listen') . '</span>'
+    . '<h3 class="display mt-5 text-2xl">News is on its <em>way.</em></h3>'
+    . '<p class="mx-auto mt-2 max-w-sm text-sm text-ink-600">' . ($canPost ? 'Be the first to share an update, a photo or a video.' : 'Updates, photos and videos from our team will appear here.') . '</p></div>';
+
+$hero = [
+    'eyebrow' => 'Live Feed',
+    'title' => 'News from <em>the team.</em>',
+    'lead' => 'Updates, photos and videos from Frequency Strategy Group — our work, our partners and our community, as it happens.',
+    'photo' => 'live-feed.hero', // photo spot — chosen in the admin under Site Photos
+    'crumbs' => [['Live Feed', null]],
+    'actions' => '<span class="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-emerald-200" title="New posts, likes and comments appear on their own">'
+        . '<span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span></span>Live — updates on its own</span>',
+];
+include __DIR__ . '/../components/site/page-hero.php';
 ?>
-<div id="live-feed-page" class="grid grid-cols-1 lg:grid-cols-12 gap-6"
-    data-scope="<?= $e($scope) ?>" data-sig="<?= $e($first['sig']) ?>" data-next-page="<?= (int) $first['next_page'] ?>"
-    data-empty-everyone="<?= $e($emptyState('everyone')) ?>" data-empty-following="<?= $e($emptyState('following')) ?>">
+<section class="bg-ivory py-16 lg:py-24">
+    <div id="live-feed-page" class="site-container grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12"
+        data-sig="<?= e($first['sig']) ?>" data-next-page="<?= (int) $first['next_page'] ?>" data-empty="<?= e($emptyState) ?>">
 
-    <div class="lg:col-span-8 space-y-5 min-w-0">
-
-        <!-- Title, live indicator, view switch -->
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div>
-                <div class="flex items-center gap-3">
-                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Live Feed</h1>
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300" title="New posts, likes and comments appear on their own">
-                        <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span></span>
-                        Live
-                    </span>
+        <div class="min-w-0 space-y-5 lg:col-span-8">
+            <?php if ($canPost): ?>
+                <!-- Composer shortcut (staff and admins) -->
+                <div class="rounded-2xl border border-ink-900/[0.07] bg-white p-4 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <?= $avatar('h-11 w-11 text-lg') ?>
+                        <button type="button" data-compose="text"
+                            class="flex-1 rounded-full bg-ivory-deep px-5 py-3 text-left text-sm text-ink-500 transition-colors hover:bg-gold-100/70">
+                            Share an update, <?= e($me->first_name ?: 'there') ?>…
+                        </button>
+                    </div>
+                    <div class="mt-3 flex items-center gap-1 border-t border-ink-900/[0.06] pt-3">
+                        <button type="button" data-compose="photo" class="inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-ink-700 transition-colors hover:bg-ivory sm:flex-none">
+                            <?= Icons::svg('photo', 'h-5 w-5 text-gold-700') ?> Photo
+                        </button>
+                        <button type="button" data-compose="video" class="inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-ink-700 transition-colors hover:bg-ivory sm:flex-none">
+                            <?= Icons::svg('video', 'h-5 w-5 text-gold-700') ?> Video
+                        </button>
+                        <button type="button" data-compose="text" class="btn-ink ml-auto hidden !px-5 !py-2.5 sm:inline-flex">
+                            <?= Icons::svg('plus', 'h-4 w-4') ?> New post
+                        </button>
+                    </div>
+                    <p class="mt-3 flex items-center gap-2 px-1 text-xs text-ink-500"><?= Icons::svg('globe', 'h-3.5 w-3.5 text-gold-700') ?> Posts are public — anyone visiting the website can see them.</p>
                 </div>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Updates, photos and videos from across the team.</p>
+            <?php endif; ?>
+
+            <!-- The feed -->
+            <div id="live-feed-posts" class="space-y-5" aria-live="polite">
+                <?= $first['html'] !== '' ? $first['html'] : $emptyState ?>
             </div>
-            <div role="tablist" aria-label="Which posts" class="inline-flex self-start sm:self-auto rounded-xl bg-gray-100 dark:bg-gray-800 p-1">
-                <?php foreach (['everyone' => 'Everyone', 'following' => 'Following'] as $key => $label): ?>
-                    <button type="button" role="tab" data-feed-scope="<?= $key ?>" aria-selected="<?= $scope === $key ? 'true' : 'false' ?>"
-                        class="rounded-lg px-4 py-1.5 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all
-                            aria-selected:bg-white aria-selected:text-gray-900 aria-selected:shadow-sm dark:aria-selected:bg-gray-900 dark:aria-selected:text-white"><?= $label ?></button>
-                <?php endforeach; ?>
+            <div class="flex justify-center">
+                <button type="button" data-load-more class="<?= $first['has_more'] ? '' : 'hidden' ?> btn-outline disabled:opacity-60">Load older posts</button>
             </div>
         </div>
 
-        <!-- Composer shortcut -->
-        <div class="rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm p-4">
-            <div class="flex items-center gap-3">
-                <?= $avatar('h-10 w-10') ?>
-                <button type="button" data-compose="text"
-                    class="flex-1 rounded-full bg-gray-100 dark:bg-gray-800 px-4 py-2.5 text-left text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-200/70 dark:hover:bg-gray-700/70 transition-colors">
-                    Share an update, <?= $e($me->first_name ?: 'there') ?>…
-                </button>
-            </div>
-            <div class="mt-3 flex items-center gap-1 border-t border-gray-100 dark:border-gray-800 pt-3">
-                <button type="button" data-compose="photo" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                    <svg class="h-5 w-5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                    Photo
-                </button>
-                <button type="button" data-compose="video" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                    <svg class="h-5 w-5 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                    Video
-                </button>
-                <button type="button" data-compose="text" class="ml-auto hidden sm:inline-flex items-center gap-2 rounded-xl bg-primary-600 hover:bg-primary-500 px-4 py-2 text-sm font-bold text-white shadow-sm shadow-primary-600/30 transition-colors">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
-                    New post
-                </button>
-            </div>
-        </div>
-
-        <!-- The feed -->
-        <div id="live-feed-posts" class="space-y-4" aria-live="polite">
-            <?= $first['html'] !== '' ? $first['html'] : $emptyState($scope) ?>
-        </div>
-        <div class="flex justify-center">
-            <button type="button" data-load-more class="<?= $first['has_more'] ? '' : 'hidden' ?> rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 px-5 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-60">
-                Load older posts
-            </button>
-        </div>
-    </div>
-
-    <!-- Sidebar: you, people search, people to follow -->
-    <aside class="lg:col-span-4 space-y-5 lg:sticky lg:top-24 self-start">
-        <div class="rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm overflow-hidden">
-            <div class="h-14 bg-gradient-to-br from-secondary-700 via-secondary-800 to-secondary-950 relative">
-                <div aria-hidden="true" class="absolute -top-8 right-6 h-24 w-24 rounded-full bg-primary-500/30 blur-2xl"></div>
-            </div>
-            <div class="px-5 pb-5">
-                <div class="relative -mt-7 flex items-end gap-3">
-                    <span class="rounded-full ring-4 ring-white dark:ring-gray-900"><?= $avatar('h-14 w-14 text-xl') ?></span>
-                    <div class="min-w-0 pb-1">
-                        <p class="text-sm font-bold text-gray-900 dark:text-white truncate"><?= $e($me->full_name) ?></p>
-                        <a href="<?= $baseUrl ?>profile" data-partial class="text-xs font-medium text-gray-500 hover:text-primary-600 dark:text-gray-400">View profile</a>
+        <!-- Side panel -->
+        <aside class="space-y-5 self-start lg:sticky lg:top-28 lg:col-span-4">
+            <?php if ($me): ?>
+                <div class="rounded-2xl border border-ink-900/[0.07] bg-white p-6 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <?= $avatar('h-12 w-12 text-xl') ?>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold uppercase tracking-widest text-gold-700">Signed in as</p>
+                            <p class="truncate font-semibold text-ink-950"><?= e($me->full_name) ?></p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-sm leading-relaxed text-ink-600"><?= $canPost ? 'You can post, like and comment. Remember everything here is public — never share confidential client information.' : 'You can read the feed. Ask an administrator if you need to post.' ?></p>
+                    <div class="mt-4 rounded-xl bg-ivory px-4 py-3 text-center">
+                        <span data-my-posts class="block font-serif text-3xl text-ink-950"><?= LiveFeedController::postCount($meId) ?></span>
+                        <span class="text-xs font-semibold uppercase tracking-widest text-ink-500">Your posts</span>
                     </div>
                 </div>
-                <div class="mt-4 grid grid-cols-3 divide-x divide-gray-100 dark:divide-gray-800 rounded-xl bg-gray-50 dark:bg-gray-800/60 text-center">
-                    <div class="py-2.5"><span data-my-posts class="block text-lg font-bold text-gray-900 dark:text-white"><?= $myPosts ?></span><span class="text-[11px] font-medium text-gray-500 dark:text-gray-400">Posts</span></div>
-                    <button type="button" data-follow-list="following" class="py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"><span data-following-count class="block text-lg font-bold text-gray-900 dark:text-white"><?= $stats['following'] ?></span><span class="text-[11px] font-medium text-gray-500 dark:text-gray-400">Following</span></button>
-                    <button type="button" data-follow-list="followers" class="py-2.5 rounded-r-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"><span data-followers-count class="block text-lg font-bold text-gray-900 dark:text-white"><?= $stats['followers'] ?></span><span class="text-[11px] font-medium text-gray-500 dark:text-gray-400">Followers</span></button>
-                </div>
-            </div>
-        </div>
+            <?php endif; ?>
 
-        <div class="rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 shadow-sm p-4">
-            <div class="relative">
-                <svg class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                <input type="search" data-people-search placeholder="Find people" autocomplete="off" aria-label="Find people"
-                    class="block w-full rounded-xl border-0 bg-gray-100 dark:bg-gray-800 py-2.5 pl-10 pr-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-500/40 outline-none">
+            <div class="ink-surface relative overflow-hidden rounded-2xl p-7">
+                <div aria-hidden="true" class="pointer-events-none absolute -bottom-6 right-0 w-56 opacity-[0.12]"><?= Icons::waveform('w-full', false) ?></div>
+                <p class="eyebrow eyebrow-light">About this feed</p>
+                <p class="mt-4 font-serif text-2xl leading-snug text-ivory">What we’re working on, <em class="text-gold-300">as it happens.</em></p>
+                <p class="mt-3 text-sm leading-relaxed text-ink-300">News, photos and videos from our team, partners and community work. New posts, likes and comments appear here on their own.</p>
+                <?php if (!$me): ?>
+                    <a data-partial href="<?= site_url('contact?type=consultation') ?>" class="btn-gold mt-6 w-full !py-3">Book a Consultation</a>
+                    <p class="mt-4 text-center text-xs text-ink-400">Team member? <a href="<?= site_url('dashboard?login') ?>" data-login-button rel="nofollow" class="font-semibold text-gold-300 hover:text-gold-200">Sign in</a> to post, like and comment.</p>
+                <?php endif; ?>
             </div>
-            <h2 data-people-heading class="mt-4 mb-1 px-1 text-[11px] font-bold uppercase tracking-[0.15em] text-gray-400">People to follow</h2>
-            <div data-people-list class="max-h-[22rem] overflow-y-auto custom-scrollbar -mx-1 space-y-0.5">
-                <div class="space-y-3 p-2 animate-pulse">
-                    <?php for ($i = 0; $i < 3; $i++): ?>
-                        <div class="flex items-center gap-3"><div class="h-9 w-9 rounded-full bg-gray-100 dark:bg-gray-800"></div><div class="h-2.5 flex-1 rounded bg-gray-100 dark:bg-gray-800"></div></div>
-                    <?php endfor; ?>
-                </div>
-            </div>
-        </div>
-    </aside>
+        </aside>
 
-    <?php include __DIR__ . '/../components/live-feed/view-post-modal.php'; ?>
-</div>
+        <?php include __DIR__ . '/../components/live-feed/view-post-modal.php'; ?>
+    </div>
+</section>

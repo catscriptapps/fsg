@@ -273,6 +273,30 @@ function initSignIn() {
   document.querySelector('a[data-login-button]')?.click();
 }
 
+/**
+ * Live Feed (pages/live-feed.php): the post list with its live updates, the
+ * post window, and — for signed-in staff — the composer (utils/live-feed/*).
+ * Loaded only when the feed is open, so other pages don't carry the uploaders.
+ */
+let feed = null;
+async function initLiveFeed() {
+  if (!document.getElementById('live-feed-page')) return;
+  if (!feed) {
+    const [posts, viewPost, compose] = await Promise.all([
+      import('./utils/live-feed/posts.js'),
+      import('./utils/live-feed/view-post.js'),
+      import('./utils/live-feed/compose.js'),
+    ]);
+    feed = { ...posts, ...viewPost, ...compose };
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('#live-feed-page [data-compose]');
+      if (trigger) feed.openComposer(trigger.dataset.compose);
+    });
+  }
+  feed.initPosts();
+  feed.initViewPost();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   setupSpinner();
   setupScrollToTop();
@@ -282,11 +306,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initInquiryForms();
   initSlideshows();
+  initLiveFeed();
 });
 
 // Router: title/summary of the page being loaded (fired before the swap)
 let pendingSummary = '';
-window.addEventListener('spa-navigation', (e) => { pendingSummary = e.detail?.summary || ''; });
+window.addEventListener('spa-navigation', (e) => {
+  pendingSummary = e.detail?.summary || '';
+  feed?.closeViewPost(); // never leave the feed's post window (and its scroll lock) behind
+});
 
 // Router: the new page is in #main-content
 document.body.addEventListener('partial-load', () => {
@@ -295,4 +323,5 @@ document.body.addEventListener('partial-load', () => {
   initReveal();
   initInquiryForms();
   initSlideshows();
+  initLiveFeed();
 });

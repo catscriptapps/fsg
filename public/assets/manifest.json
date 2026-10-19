@@ -11,6 +11,10 @@
     "file": "js/delete-factory-ehB9kID_.min.js",
     "name": "delete-factory"
   },
+  "_emoji-picker-Cl8TiyoC.min.js": {
+    "file": "js/emoji-picker-Cl8TiyoC.min.js",
+    "name": "emoji-picker"
+  },
   "_escape-html-CVt4dYnb.min.js": {
     "file": "js/escape-html-CVt4dYnb.min.js",
     "name": "escape-html"
@@ -130,19 +134,6 @@
       "_confirm-VjUZGJTv.min.js"
     ]
   },
-  "resources/js/pages/live-feed-page.js": {
-    "file": "js/live-feed-page.min.js",
-    "name": "live-feed-page",
-    "src": "resources/js/pages/live-feed-page.js",
-    "isEntry": true,
-    "imports": [
-      "_toast-CjCHkGmx.min.js",
-      "_confirm-VjUZGJTv.min.js",
-      "_modal-factory-C4kaNEVn.min.js",
-      "_upload-modal-BDCuzSXE.min.js",
-      "_escape-html-CVt4dYnb.min.js"
-    ]
-  },
   "resources/js/pages/messages-page.js": {
     "file": "js/messages-page.min.js",
     "name": "messages-page",
@@ -252,6 +243,47 @@
       "_form-validator-B40BFkZ0.min.js",
       "_toast-CjCHkGmx.min.js",
       "_spinner-utils-BGUFcaGl.min.js"
+    ],
+    "dynamicImports": [
+      "resources/js/utils/live-feed/posts.js",
+      "resources/js/utils/live-feed/view-post.js",
+      "resources/js/utils/live-feed/compose.js"
+    ]
+  },
+  "resources/js/utils/live-feed/compose.js": {
+    "file": "js/compose-Dft7Lgcv.min.js",
+    "name": "compose",
+    "src": "resources/js/utils/live-feed/compose.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_modal-factory-C4kaNEVn.min.js",
+      "_upload-modal-BDCuzSXE.min.js",
+      "_toast-CjCHkGmx.min.js",
+      "_escape-html-CVt4dYnb.min.js",
+      "_emoji-picker-Cl8TiyoC.min.js",
+      "resources/js/utils/live-feed/posts.js",
+      "_confirm-VjUZGJTv.min.js"
+    ]
+  },
+  "resources/js/utils/live-feed/posts.js": {
+    "file": "js/posts-CIUOi8HE.min.js",
+    "name": "posts",
+    "src": "resources/js/utils/live-feed/posts.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_toast-CjCHkGmx.min.js",
+      "_confirm-VjUZGJTv.min.js"
+    ]
+  },
+  "resources/js/utils/live-feed/view-post.js": {
+    "file": "js/view-post-C1uV0Qvg.min.js",
+    "name": "view-post",
+    "src": "resources/js/utils/live-feed/view-post.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_toast-CjCHkGmx.min.js",
+      "_confirm-VjUZGJTv.min.js",
+      "_emoji-picker-Cl8TiyoC.min.js"
     ]
   }
 }

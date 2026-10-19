@@ -1,11 +1,12 @@
 <?php
 // /server/api/live-feed.php
 //
-// The Live Feed (Src\Controller\LiveFeedController), JSON in / out:
-//   GET  ?scope=everyone|following&page=N   one page of post cards (+ sig)
-//   GET  ?action=get-details&post_id=…      a post's comments
-//   POST {content, media_url, media_type}   share a post
-//   POST {action: toggle-like | add-comment | delete-comment | delete-post, …}
+// The Live Feed (Src\Controller\LiveFeedController), JSON in / out. It's
+// public: anyone can read; only signed-in staff and admins can write.
+//   GET  ?page=N                            one page of post cards (+ sig)      — everyone
+//   GET  ?action=get-details&post_id=…      a post's comments                  — everyone
+//   POST {content, media_url, media_type}   share a post                        — signed in
+//   POST {action: toggle-like | add-comment | delete-comment | delete-post, …}  — signed in
 
 declare(strict_types=1);
 
@@ -14,15 +15,17 @@ use Src\Service\AuthService;
 
 header('Content-Type: application/json; charset=utf-8');
 
-$userId = AuthService::userId();
-if (!$userId) {
-    json_response(['success' => false, 'message' => 'Please sign in to use the Live Feed.'], 401);
-}
-if (!AuthService::hasAccess('Live Feed')) {
-    json_response(['success' => false, 'message' => "You don't have access to the Live Feed."], 403);
-}
-
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$userId = AuthService::userId() ?? 0; // 0 = a guest, who can only read
+
+if ($method === 'POST') {
+    if (!$userId) {
+        json_response(['success' => false, 'message' => 'Please sign in to post, like or comment.'], 401);
+    }
+    if (!AuthService::hasAccess('Live Feed')) {
+        json_response(['success' => false, 'message' => "You don't have access to post on the Live Feed."], 403);
+    }
+}
 $input = array_merge($_GET, $_POST, json_decode(file_get_contents('php://input'), true) ?: []);
 $action = (string) ($input['action'] ?? '');
 
@@ -32,7 +35,7 @@ if ($method === 'GET') {
         json_response($result, $result['success'] ? 200 : 404);
     }
 
-    json_response(['success' => true] + LiveFeedController::page($userId, (string) ($input['scope'] ?? 'everyone'), (int) ($input['page'] ?? 1)));
+    json_response(['success' => true] + LiveFeedController::page($userId, (int) ($input['page'] ?? 1)));
 }
 
 if ($method === 'POST') {

@@ -73,6 +73,7 @@ class Photos
             'funding.intro'     => ['Funding & Resources', 'Intro photo', 'Under “From research to a ready-to-submit application”.', 'meeting'],
             'projects.hero'     => ['Projects & Partnerships', 'Hero background', 'Behind the Projects headline, under a dark tint.', 'network'],
             'projects.partner'  => ['Projects & Partnerships', 'Partner with us photo', 'In the dark “Partner with us” section.', 'teamwork'],
+            'live-feed.hero'    => ['Live Feed', 'Hero background', 'Behind the Live Feed headline, under a dark tint.', 'teamwork'],
             'testimonials.hero' => ['Testimonials', 'Hero background', 'Behind the Testimonials headline, under a dark tint.', 'teamwork'],
             'contact.hero'      => ['Contact', 'Hero background', 'Behind the Contact headline, under a dark tint.', 'consult'],
         ];

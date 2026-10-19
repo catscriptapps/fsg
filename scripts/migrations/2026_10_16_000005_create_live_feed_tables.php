@@ -1,14 +1,12 @@
 <?php
 // /scripts/migrations/2026_10_16_000005_create_live_feed_tables.php
 //
-// Live Feed (members: /live-feed — Src\Controller\LiveFeedController and
-// FollowsController):
+// Live Feed (public page /live-feed — Src\Controller\LiveFeedController):
 //
 //   posts           a member's update: text, and/or one photo or video
 //                   (media_url is a bare file name in public/images/uploads/posts/)
 //   post_comments   comments on a post
 //   post_likes      one like per member per post
-//   follows         who follows whom (the "Following" view of the feed)
 //
 // Additive and idempotent: each table is created only if it's missing.
 // Comments and likes go with their post (ON DELETE CASCADE).
@@ -49,14 +47,6 @@ return function (): array {
             $t->timestamps();
             $t->unique(['post_id', 'orig_user_id']);
             $t->foreign('post_id')->references('post_id')->on('posts')->onDelete('cascade');
-        },
-
-        'follows' => function (Blueprint $t) {
-            $t->increments('follow_id');
-            $t->unsignedInteger('follower_id');   // the person doing the following
-            $t->unsignedInteger('following_id')->index(); // the person being followed
-            $t->timestamps();
-            $t->unique(['follower_id', 'following_id']);
         },
     ];
 

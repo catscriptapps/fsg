@@ -119,7 +119,7 @@ class NavigationConfig
             'Live Feed' => [
                 'url' => $base . '/live-feed',
                 'title' => 'Live Feed',
-                'summary' => 'Updates, photos and videos from across the team — like, comment and follow.'
+                'summary' => 'The team’s public updates, photos and videos — post, like and comment.'
             ],
             'Messages' => [
                 'url' => $base . '/messages',
@@ -222,7 +222,6 @@ class NavigationConfig
         return [
             $base . '/dashboard',
             $base . '/messages',
-            $base . '/live-feed',
             $base . '/profile',
             $base . '/settings',
             $base . '/users',

@@ -41,7 +41,7 @@ class UsersController
                 $userName = $user->full_name;
                 $userEmail = $user->email;
 
-                // Their Live Feed posts (with photos / videos), comments, likes and follows
+                // Their Live Feed posts (with photos / videos), comments and likes
                 LiveFeedController::deleteAllFor((int) $user->id);
 
                 if ($user->delete()) {

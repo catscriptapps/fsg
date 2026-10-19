@@ -1,8 +1,8 @@
 // /resources/js/utils/live-feed/posts.js
 //
-// The Live Feed's list of posts (#live-feed-posts): the Everyone /
-// Following switch, "Load older posts", likes, the ⋯ menu and deleting —
-// and keeping it live:
+// The Live Feed's list of posts (#live-feed-posts): "Load older posts",
+// likes, the ⋯ menu and deleting — and keeping it live (for guests too —
+// reading is public; the like / delete buttons only exist for signed-in staff):
 //
 //   - every POLL_MS (and on coming back to the tab) it fetches the first
 //     page; the server's `sig` (posts + like / comment counts) says whether
@@ -35,8 +35,8 @@ let olderLoaded = false;
 // Fetching
 // ------------------------------------------------------------
 
-async function fetchPage(scope, n = 1) {
-  const res = await fetch(`${base()}api/live-feed?scope=${encodeURIComponent(scope)}&page=${n}`, { cache: 'no-store' });
+async function fetchPage(n = 1) {
+  const res = await fetch(`${base()}api/live-feed?page=${n}`, { cache: 'no-store' });
   const json = await res.json();
   if (!json.success) throw new Error(json.message || 'Could not load the feed');
   return json;
@@ -44,10 +44,7 @@ async function fetchPage(scope, n = 1) {
 
 const ids = (root) => [...root.querySelectorAll(':scope > [data-post-id]')].map((el) => el.dataset.postId);
 
-function emptyState() {
-  const p = page();
-  return p?.dataset[p.dataset.scope === 'following' ? 'emptyFollowing' : 'emptyEveryone'] || '';
-}
+const emptyState = () => page()?.dataset.empty || '';
 
 /** Replace the list with page 1 (and reset paging). */
 function apply(json) {
@@ -99,7 +96,7 @@ async function check() {
   lastCheck = Date.now();
   const seq = ++request;
   let json;
-  try { json = await fetchPage(p.dataset.scope); } catch { return; } // offline for a moment
+  try { json = await fetchPage(); } catch { return; } // offline for a moment
   if (seq !== request || !document.body.contains(p) || json.sig === p.dataset.sig) return;
 
   const tmp = document.createElement('div');
@@ -125,7 +122,7 @@ function showPill(count) {
     pill = document.createElement('button');
     pill.type = 'button';
     pill.id = 'live-feed-new-posts';
-    pill.className = 'fixed left-1/2 top-24 z-30 -translate-x-1/2 inline-flex items-center gap-2 rounded-full bg-secondary-900 dark:bg-white px-4 py-2 text-sm font-bold text-white dark:text-gray-900 shadow-xl transition-all hover:scale-105';
+    pill.className = 'fixed left-1/2 top-28 z-40 -translate-x-1/2 inline-flex items-center gap-2 rounded-full bg-ink-950 px-5 py-2.5 text-sm font-semibold text-gold-200 ring-1 ring-gold-300/30 shadow-xl transition-all hover:scale-105';
     pill.addEventListener('click', () => {
       if (pending) apply(pending);
       list()?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -145,7 +142,7 @@ function stop() {
   hidePill();
 }
 
-/** Re-fetch the first page now (after switching views, following someone…). */
+/** Re-fetch the first page now. */
 export async function refreshFeed() {
   const p = page();
   const l = list();
@@ -154,7 +151,7 @@ export async function refreshFeed() {
   l.style.transition = 'opacity 150ms ease';
   l.style.opacity = '0.5';
   try {
-    const json = await fetchPage(p.dataset.scope);
+    const json = await fetchPage();
     if (seq === request && document.body.contains(l)) apply(json);
   } catch {
     showToast('Could not refresh the feed — check your connection.', 'error');
@@ -181,21 +178,12 @@ function bumpMyPosts(delta) {
 // Clicks
 // ------------------------------------------------------------
 
-async function switchScope(scope) {
-  const p = page();
-  if (!p || p.dataset.scope === scope) return;
-  p.dataset.scope = scope;
-  p.querySelectorAll('[data-feed-scope]').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.feedScope === scope)));
-  history.replaceState(history.state, '', scope === 'following' ? `${location.pathname}?view=following` : location.pathname);
-  await refreshFeed();
-}
-
 async function loadOlder(btn) {
   const p = page();
   btn.disabled = true;
   btn.textContent = 'Loading…';
   try {
-    const json = await fetchPage(p.dataset.scope, parseInt(p.dataset.nextPage, 10) || 2);
+    const json = await fetchPage(parseInt(p.dataset.nextPage, 10) || 2);
     const tmp = document.createElement('div');
     tmp.innerHTML = json.html;
     const shown = new Set(ids(list()));
@@ -219,9 +207,7 @@ async function toggleLike(btn) {
   const show = (liked, n) => {
     btn.setAttribute('aria-pressed', String(liked));
     btn.classList.toggle('text-rose-600', liked);
-    btn.classList.toggle('dark:text-rose-400', liked);
-    btn.classList.toggle('text-gray-500', !liked);
-    btn.classList.toggle('dark:text-gray-400', !liked);
+    btn.classList.toggle('text-ink-500', !liked);
     icon.classList.toggle('fill-current', liked);
     icon.classList.toggle('fill-none', !liked);
     count.textContent = n;
@@ -272,9 +258,6 @@ async function deletePost(btn) {
 
 function onClick(e) {
   if (!page()?.contains(e.target)) return;
-
-  const scope = e.target.closest('[data-feed-scope]');
-  if (scope) return switchScope(scope.dataset.feedScope);
 
   const more = e.target.closest('[data-load-more]');
   if (more) return loadOlder(more);
