@@ -65,7 +65,6 @@ $explore = [
             <ul class="flex flex-wrap gap-x-6 gap-y-2">
                 <li><a data-partial href="<?= site_url('privacy') ?>" class="hover:text-gold-300">Privacy Policy</a></li>
                 <li><a data-partial href="<?= site_url('terms') ?>" class="hover:text-gold-300">Terms of Use & Disclaimers</a></li>
-                <li><a href="<?= site_url('sitemap.xml') ?>" class="hover:text-gold-300">Sitemap</a></li>
                 <?php if ($isLoggedIn ?? false): ?>
                     <li><a data-partial href="<?= site_url('dashboard') ?>" class="hover:text-gold-300">Dashboard</a></li>
                 <?php else: ?>
